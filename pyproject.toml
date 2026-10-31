@@ -1,0 +1,17 @@
+[project]
+name = "coin-flip-simulator"
+version = "0.1.0"
+description = "Interactive explorer for a positive-EV coin flip that can ruin you"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+coin-flip = "coin_flip_simulator.server:main"
+
+[tool.poetry]
+packages = [{ include = "coin_flip_simulator" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
