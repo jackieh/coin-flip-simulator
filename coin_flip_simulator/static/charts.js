@@ -4,21 +4,27 @@ export function theme() {
   const cs = getComputedStyle(document.documentElement);
   const v = (name) => cs.getPropertyValue(name).trim();
   return {
-    surface: v('--surface-1'),
-    ink: v('--text-primary'),
-    ink2: v('--text-secondary'),
-    muted: v('--text-muted'),
+    surface: v('--ground'),
+    ink: v('--ink'),
+    ink2: v('--ink-2'),
+    muted: v('--muted'),
     grid: v('--grid'),
-    axis: v('--axis'),
-    s1: v('--series-1'),
-    s2: v('--series-2'),
-    s3: v('--series-3'),
+    axis: v('--plate'),
+    plate: v('--plate'),
+    rule: v('--rule'),
+    s1: v('--s1'),
+    s2: v('--s2'),
+    s3: v('--s3'),
+    iso: v('--iso'),
     critical: v('--critical'),
-    good: v('--good'),
+    zone: v('--zone'),
     seq: v('--seq').split(',').map((s) => s.trim()),
-    font: '12px system-ui, -apple-system, "Segoe UI", sans-serif',
+    font: '500 12px Archivo, system-ui, sans-serif',
   };
 }
+
+/** Stroke patterns that carry series identity alongside hue. */
+export const DASH = { solid: [], dashed: [7, 5], dotted: [1.5, 4.5] };
 
 // ---------- scales ----------
 export function linearScale(d0, d1, r0, r1) {
@@ -118,6 +124,24 @@ export class Chart {
       this.mouse = [e.clientX - r.left, e.clientY - r.top];
       this.drawHover();
     });
+    // Optional direct manipulation: this.dragFn(mx, my) sets an input from a point on the plot.
+    this.dragFn = null;
+    this.dragging = false;
+    this.over.addEventListener('pointerdown', (e) => {
+      if (!this.dragFn) return;
+      const r = this.over.getBoundingClientRect();
+      this.dragging = true;
+      this.over.setPointerCapture(e.pointerId);
+      this.dragFn(e.clientX - r.left, e.clientY - r.top);
+    });
+    this.over.addEventListener('pointermove', (e) => {
+      if (!this.dragging || !this.dragFn) return;
+      const r = this.over.getBoundingClientRect();
+      this.dragFn(e.clientX - r.left, e.clientY - r.top);
+    });
+    const endDrag = () => (this.dragging = false);
+    this.over.addEventListener('pointerup', endDrag);
+    this.over.addEventListener('pointercancel', endDrag);
     this.over.addEventListener('mouseleave', () => {
       this.mouse = null;
       this.drawHover();
@@ -130,6 +154,22 @@ export class Chart {
     const h = this.height;
     const m = this.margin;
     return { w, h, x0: m.left, x1: w - m.right, y0: m.top, y1: h - m.bottom, t: theme() };
+  }
+
+  /** Every chart label gets a ground-coloured knockout so rules and curves never cut through text. */
+  halo(ctx, surface) {
+    const fill = ctx.fillText.bind(ctx);
+    ctx.fillText = (text, x, y) => {
+      ctx.save();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 4;
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = surface;
+      ctx.strokeText(text, x, y);
+      ctx.restore();
+      fill(text, x, y);
+    };
   }
 
   setup(canvas) {
@@ -145,9 +185,12 @@ export class Chart {
     return ctx;
   }
 
-  set(renderFn, hoverFn) {
+  set(renderFn, hoverFn, dragFn = null, dragAxis = 'x') {
     this.renderFn = renderFn;
     this.hoverFn = hoverFn;
+    this.dragFn = dragFn;
+    this.over.style.cursor = dragFn ? (dragAxis === 'x' ? 'ew-resize' : 'ns-resize') : 'crosshair';
+    this.over.style.touchAction = dragFn ? 'pan-y' : '';
     this.draw();
   }
 
@@ -156,6 +199,7 @@ export class Chart {
     const f = this.frame();
     const ctx = this.setup(this.base);
     ctx.font = f.t.font;
+    this.halo(ctx, f.t.surface);
     this.renderFn(ctx, f);
     this.drawHover();
   }
@@ -168,6 +212,7 @@ export class Chart {
     }
     const f = this.frame();
     ctx.font = f.t.font;
+    this.halo(ctx, f.t.surface);
     const [mx, my] = this.mouse;
     const html = this.hoverFn(ctx, f, mx, my);
     if (!html) {
@@ -245,8 +290,9 @@ export function clipPlot(ctx, f) {
   ctx.clip();
 }
 
-export function line(ctx, xs, ys, x, y, color, width = 2, alpha = 1) {
+export function line(ctx, xs, ys, x, y, color, width = 2, alpha = 1, dash = DASH.solid) {
   ctx.save();
+  ctx.setLineDash(dash);
   ctx.strokeStyle = color;
   ctx.globalAlpha = alpha;
   ctx.lineWidth = width;
@@ -281,6 +327,7 @@ export function vline(ctx, f, px, color, label, { align = 'left', dy = 0 } = {})
   ctx.stroke();
   if (label) {
     ctx.fillStyle = f.t.ink2;
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     const w = ctx.measureText(label).width;
     let tx = align === 'left' ? px + 6 : px - 6 - w;
@@ -296,7 +343,7 @@ export function vline(ctx, f, px, color, label, { align = 'left', dy = 0 } = {})
   ctx.restore();
 }
 
-export function hline(ctx, f, py, color, label, { below = false } = {}) {
+export function hline(ctx, f, py, color, label, { below = false, align = 'right' } = {}) {
   ctx.save();
   ctx.strokeStyle = color;
   ctx.lineWidth = 1;
@@ -306,9 +353,9 @@ export function hline(ctx, f, py, color, label, { below = false } = {}) {
   ctx.stroke();
   if (label) {
     ctx.fillStyle = f.t.ink2;
-    ctx.textAlign = 'right';
+    ctx.textAlign = align;
     ctx.textBaseline = below ? 'top' : 'bottom';
-    ctx.fillText(label, f.x1 - 4, py + (below ? 4 : -4));
+    ctx.fillText(label, align === 'right' ? f.x1 - 4 : f.x0 + 6, py + (below ? 4 : -4));
   }
   ctx.restore();
 }
@@ -324,10 +371,10 @@ export function dot(ctx, px, py, color, surface, r = 4) {
   ctx.fill();
 }
 
-export function crosshair(ctx, f, px) {
+export function crosshair(ctx, f, px, color = f.t.muted) {
   ctx.save();
-  ctx.strokeStyle = f.t.muted;
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = color === f.t.muted ? 1 : 2;
   ctx.beginPath();
   ctx.moveTo(Math.round(px) + 0.5, f.y0);
   ctx.lineTo(Math.round(px) + 0.5, f.y1);
@@ -367,12 +414,40 @@ function hexToRgb(h) {
   return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
 }
 
-/** Legend items: [{label, color, kind: 'line'|'swatch'|'wash'}] rendered as HTML. */
+/** Legend items: [{label, color, kind: 'line'|'swatch'|'wash'|'thin', dash}] rendered as HTML. */
 export function legendHTML(items) {
   return items
-    .map(
-      (it) =>
-        `<span class="key"><i class="k-${it.kind || 'line'}" style="--c:${it.color}"></i>${it.label}</span>`,
-    )
+    .map((it) => {
+      const kind = it.kind || 'line';
+      let mark;
+      if (kind === 'swatch') mark = `<svg width="12" height="12" aria-hidden="true"><rect width="12" height="12" rx="2" fill="${it.color}"/></svg>`;
+      else if (kind === 'wash') mark = `<svg width="20" height="12" aria-hidden="true"><rect width="20" height="12" rx="2" fill="${it.color}" opacity=".18"/></svg>`;
+      else {
+        const w = kind === 'thin' ? 1.25 : 2.5;
+        const d = it.dash ? `stroke-dasharray="${it.dash.join(' ')}"` : '';
+        mark = `<svg width="26" height="10" aria-hidden="true"><line x1="1" y1="5" x2="25" y2="5" stroke="${it.color}" stroke-width="${w}" stroke-linecap="round" ${d}/></svg>`;
+      }
+      return `<span class="key">${mark}${it.label}</span>`;
+    })
     .join('');
+}
+
+/** The drafting hatch used for forbidden zones (matches the alignment chart). */
+export function hatch(ctx, color) {
+  const c = document.createElement('canvas');
+  c.width = 8;
+  c.height = 8;
+  const g = c.getContext('2d');
+  g.strokeStyle = color;
+  g.globalAlpha = 0.35;
+  g.lineWidth = 1.25;
+  g.beginPath();
+  g.moveTo(0, 8);
+  g.lineTo(8, 0);
+  g.moveTo(-2, 2);
+  g.lineTo(2, -2);
+  g.moveTo(6, 10);
+  g.lineTo(10, 6);
+  g.stroke();
+  return ctx.createPattern(c, 'repeat');
 }

@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-31T19:32:03.536Z",
+        "reason": "builder decision: throwaway decision-round sketches of unchosen/alternate directions, gitignored, not shipped; DESIGN.md governs only the built page"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-31T19:32:03.548Z",
+        "reason": "builder decision: throwaway decision-round sketches of unchosen/alternate directions, gitignored, not shipped; DESIGN.md governs only the built page"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-brick.html"
+        ],
+        "createdAt": "2026-10-31T19:32:03.559Z",
+        "reason": "builder decision: throwaway decision-round sketches of unchosen/alternate directions, gitignored, not shipped; DESIGN.md governs only the built page"
+      }
+    ]
+  }
+}

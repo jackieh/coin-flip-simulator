@@ -1,0 +1,814 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T19:31:10+00:00",
+  "title": "Design System: The coin-flip handbook",
+  "extensions": {
+    "colorMeta": {
+      "drafting-film": {
+        "role": "neutral",
+        "displayName": "Drafting Film",
+        "theme": "light",
+        "cssVar": "--ground",
+        "canonical": "#eef1f3",
+        "oklch": "oklch(95.6% 0.004 236)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#414243",
+          "#5f6163",
+          "#808384",
+          "#a3a5a7",
+          "#c8c9ca",
+          "#eeeeef"
+        ]
+      },
+      "rail-film": {
+        "role": "neutral",
+        "displayName": "Rail Film",
+        "theme": "light",
+        "cssVar": "--ground-2",
+        "canonical": "#e4e9ed",
+        "oklch": "oklch(93.1% 0.008 242)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#404244",
+          "#5e6264",
+          "#7e8386",
+          "#a2a5a8",
+          "#c7c9cb",
+          "#edeeef"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "theme": "light",
+        "cssVar": "--ink",
+        "canonical": "#0f1720",
+        "oklch": "oklch(20.1% 0.022 252)",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#232528",
+          "#3e4248",
+          "#5b626b",
+          "#79838f",
+          "#9ea6af",
+          "#c4cad0",
+          "#eceff2"
+        ]
+      },
+      "prussian-plate": {
+        "role": "primary",
+        "displayName": "Prussian Plate Ink",
+        "theme": "light",
+        "cssVar": "--plate",
+        "canonical": "#1d3557",
+        "oklch": "oklch(32.8% 0.068 257)",
+        "tonalRamp": [
+          "#12335f",
+          "#1f4c88",
+          "#3567aa",
+          "#5585c2",
+          "#7ea5d4",
+          "#aac4e3",
+          "#d3e0ef",
+          "#eef1f3"
+        ],
+        "note": "Tonal ramp is the shipped --seq sequential scale (light), used by the ruin heatmap."
+      },
+      "slate-ink": {
+        "role": "neutral",
+        "displayName": "Slate Ink",
+        "theme": "light",
+        "cssVar": "--ink-2",
+        "canonical": "#33414f",
+        "oklch": "oklch(36.9% 0.030 249)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#222529",
+          "#3c434a",
+          "#57636e",
+          "#758494",
+          "#9ba7b3",
+          "#c2cad2",
+          "#ebeff3"
+        ]
+      },
+      "muted-graphite": {
+        "role": "neutral",
+        "displayName": "Muted Graphite",
+        "theme": "light",
+        "cssVar": "--muted",
+        "canonical": "#55626f",
+        "oklch": "oklch(49.0% 0.026 248)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232528",
+          "#3d4349",
+          "#59626c",
+          "#778492",
+          "#9ca6b1",
+          "#c3cad1",
+          "#ebeff2"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "theme": "light",
+        "cssVar": "--rule",
+        "canonical": "#c3ccd4",
+        "oklch": "oklch(84.1% 0.015 245)",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#242527",
+          "#3f4246",
+          "#5c6267",
+          "#7b838b",
+          "#a0a6ac",
+          "#c5cacd",
+          "#edeff0"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Rule Strong",
+        "theme": "light",
+        "cssVar": "--rule-strong",
+        "canonical": "#8d9aa7",
+        "oklch": "oklch(68.0% 0.024 248)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232528",
+          "#3d4348",
+          "#59626c",
+          "#778490",
+          "#9da6b0",
+          "#c3cad0",
+          "#eceff2"
+        ]
+      },
+      "grid": {
+        "role": "neutral",
+        "displayName": "Grid",
+        "theme": "light",
+        "cssVar": "--grid",
+        "canonical": "#d8dee3",
+        "oklch": "oklch(89.7% 0.009 243)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#404244",
+          "#5e6265",
+          "#7e8388",
+          "#a1a6a9",
+          "#c7c9cc",
+          "#edeff0"
+        ]
+      },
+      "isopleth-orange": {
+        "role": "secondary",
+        "displayName": "Isopleth Orange",
+        "theme": "light",
+        "cssVar": "--iso",
+        "canonical": "#d9530a",
+        "oklch": "oklch(61.3% 0.182 42)",
+        "tonalRamp": [
+          "#150704",
+          "#381d12",
+          "#692e15",
+          "#9f3f12",
+          "#d6520d",
+          "#ea8760",
+          "#fbb79d",
+          "#ffe6da"
+        ]
+      },
+      "isopleth-wash": {
+        "role": "secondary",
+        "displayName": "Isopleth Wash",
+        "theme": "light",
+        "cssVar": "--iso-wash",
+        "canonical": "rgba(217, 83, 10, 0.12)"
+      },
+      "series-blue": {
+        "role": "data",
+        "displayName": "Series Blue",
+        "theme": "light",
+        "cssVar": "--s1",
+        "canonical": "#2a6fd0",
+        "oklch": "oklch(55.2% 0.165 258)",
+        "tonalRamp": [
+          "#050b16",
+          "#182539",
+          "#24426e",
+          "#2f60a7",
+          "#3d81e1",
+          "#74a6f0",
+          "#aacbfd",
+          "#e0f0ff"
+        ]
+      },
+      "series-green": {
+        "role": "data",
+        "displayName": "Series Green",
+        "theme": "light",
+        "cssVar": "--s2",
+        "canonical": "#139a74",
+        "oklch": "oklch(61.1% 0.121 167)",
+        "tonalRamp": [
+          "#040e0a",
+          "#152a22",
+          "#1b4c3b",
+          "#197256",
+          "#179973",
+          "#6ab799",
+          "#a6d6c1",
+          "#def5eb"
+        ]
+      },
+      "series-magenta": {
+        "role": "data",
+        "displayName": "Series Magenta",
+        "theme": "light",
+        "cssVar": "--s3",
+        "canonical": "#c0479c",
+        "oklch": "oklch(59.0% 0.181 341)",
+        "tonalRamp": [
+          "#13070e",
+          "#341c2c",
+          "#612c50",
+          "#933c78",
+          "#c54ea1",
+          "#dc82bd",
+          "#f1b3da",
+          "#ffe5f6"
+        ]
+      },
+      "ruin-red": {
+        "role": "tertiary",
+        "displayName": "Ruin Red",
+        "theme": "light",
+        "cssVar": "--critical",
+        "canonical": "#b42318",
+        "oklch": "oklch(50.0% 0.182 30)",
+        "tonalRamp": [
+          "#150705",
+          "#381c18",
+          "#6b2b23",
+          "#a13a2e",
+          "#d94c3c",
+          "#ec8373",
+          "#fdb4a8",
+          "#ffe5df"
+        ]
+      },
+      "plate-zone": {
+        "role": "neutral",
+        "displayName": "Plate Zone",
+        "theme": "light",
+        "cssVar": "--zone",
+        "canonical": "rgba(29, 53, 87, 0.08)"
+      },
+      "dark-film": {
+        "role": "neutral",
+        "displayName": "Dark Drafting Film",
+        "theme": "dark",
+        "cssVar": "--ground",
+        "canonical": "#0e151d",
+        "oklch": "oklch(19.3% 0.019 252)",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#232527",
+          "#3e4247",
+          "#5b626a",
+          "#7a838e",
+          "#9fa6ae",
+          "#c5cacf",
+          "#eceff1"
+        ]
+      },
+      "dark-rail-film": {
+        "role": "neutral",
+        "displayName": "Dark Rail Film",
+        "theme": "dark",
+        "cssVar": "--ground-2",
+        "canonical": "#121b25",
+        "oklch": "oklch(21.8% 0.024 252)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232528",
+          "#3d4348",
+          "#5a626b",
+          "#788490",
+          "#9da6b0",
+          "#c4cad0",
+          "#eceff2"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark Ink",
+        "theme": "dark",
+        "cssVar": "--ink",
+        "canonical": "#e7edf3",
+        "oklch": "oklch(94.3% 0.010 248)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#404245",
+          "#5e6266",
+          "#7e8388",
+          "#a1a5aa",
+          "#c7c9cc",
+          "#edeff0"
+        ]
+      },
+      "dark-plate": {
+        "role": "primary",
+        "displayName": "Dark Prussian Plate Ink",
+        "theme": "dark",
+        "cssVar": "--plate",
+        "canonical": "#a9c6ea",
+        "oklch": "oklch(81.7% 0.060 254)",
+        "tonalRamp": [
+          "#0e151d",
+          "#12273f",
+          "#183a5f",
+          "#1f4f82",
+          "#2c66a6",
+          "#4a86c7",
+          "#7ba8de",
+          "#b9d1ef"
+        ],
+        "note": "Tonal ramp is the shipped dark --seq sequential scale."
+      },
+      "dark-slate-ink": {
+        "role": "neutral",
+        "displayName": "Dark Slate Ink",
+        "theme": "dark",
+        "cssVar": "--ink-2",
+        "canonical": "#c0cbd6",
+        "oklch": "oklch(83.7% 0.020 248)",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#232527",
+          "#3e4347",
+          "#5b6269",
+          "#7a848e",
+          "#9ea6ae",
+          "#c5cacf",
+          "#eceff1"
+        ]
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Dark Muted Graphite",
+        "theme": "dark",
+        "cssVar": "--muted",
+        "canonical": "#8d9cab",
+        "oklch": "oklch(68.6% 0.028 248)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#222528",
+          "#3c4349",
+          "#58636d",
+          "#768492",
+          "#9ba6b2",
+          "#c3cad2",
+          "#ebeff2"
+        ]
+      },
+      "dark-hairline": {
+        "role": "neutral",
+        "displayName": "Dark Hairline",
+        "theme": "dark",
+        "cssVar": "--rule",
+        "canonical": "#263443",
+        "oklch": "oklch(31.9% 0.033 251)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#222529",
+          "#3c434b",
+          "#57636f",
+          "#748495",
+          "#9aa7b4",
+          "#c2cad3",
+          "#ebeff3"
+        ]
+      },
+      "dark-rule-strong": {
+        "role": "neutral",
+        "displayName": "Dark Rule Strong",
+        "theme": "dark",
+        "cssVar": "--rule-strong",
+        "canonical": "#43566a",
+        "oklch": "oklch(44.5% 0.041 250)",
+        "tonalRamp": [
+          "#090b0e",
+          "#21262a",
+          "#3a434d",
+          "#546373",
+          "#71859a",
+          "#98a7b7",
+          "#c0cad6",
+          "#eaeff4"
+        ]
+      },
+      "dark-grid": {
+        "role": "neutral",
+        "displayName": "Dark Grid",
+        "theme": "dark",
+        "cssVar": "--grid",
+        "canonical": "#1c2733",
+        "oklch": "oklch(26.8% 0.027 251)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232528",
+          "#3d4349",
+          "#59626d",
+          "#778492",
+          "#9ca6b1",
+          "#c3cad2",
+          "#ebeff2"
+        ]
+      },
+      "dark-isopleth-orange": {
+        "role": "secondary",
+        "displayName": "Dark Isopleth Orange",
+        "theme": "dark",
+        "cssVar": "--iso",
+        "canonical": "#ff7b33",
+        "oklch": "oklch(72.6% 0.180 46)",
+        "tonalRamp": [
+          "#140703",
+          "#371d11",
+          "#682f11",
+          "#9d4103",
+          "#d45600",
+          "#e8895b",
+          "#f9b89a",
+          "#ffe7d9"
+        ]
+      },
+      "dark-series-blue": {
+        "role": "data",
+        "displayName": "Dark Series Blue",
+        "theme": "dark",
+        "cssVar": "--s1",
+        "canonical": "#4b8fe6",
+        "oklch": "oklch(64.6% 0.148 256)",
+        "tonalRamp": [
+          "#050b14",
+          "#192637",
+          "#254369",
+          "#3162a0",
+          "#4083d7",
+          "#77a8e8",
+          "#abccf7",
+          "#e0f0ff"
+        ]
+      },
+      "dark-series-green": {
+        "role": "data",
+        "displayName": "Dark Series Green",
+        "theme": "dark",
+        "cssVar": "--s2",
+        "canonical": "#1fae86",
+        "oklch": "oklch(67.0% 0.129 168)",
+        "tonalRamp": [
+          "#040e0a",
+          "#142a22",
+          "#154d3b",
+          "#057356",
+          "#009a74",
+          "#64b89a",
+          "#a3d7c2",
+          "#ddf5eb"
+        ]
+      },
+      "dark-series-magenta": {
+        "role": "data",
+        "displayName": "Dark Series Magenta",
+        "theme": "dark",
+        "cssVar": "--s3",
+        "canonical": "#d562b4",
+        "oklch": "oklch(66.2% 0.173 340)",
+        "tonalRamp": [
+          "#12070f",
+          "#331c2c",
+          "#602d51",
+          "#903e79",
+          "#c152a2",
+          "#d984be",
+          "#eeb5da",
+          "#ffe5f7"
+        ]
+      },
+      "dark-ruin-red": {
+        "role": "tertiary",
+        "displayName": "Dark Ruin Red",
+        "theme": "dark",
+        "cssVar": "--critical",
+        "canonical": "#f0605a",
+        "oklch": "oklch(67.2% 0.179 25)",
+        "tonalRamp": [
+          "#150706",
+          "#381c19",
+          "#6a2b28",
+          "#a03a37",
+          "#d84c48",
+          "#ec827a",
+          "#fcb4ad",
+          "#ffe5e1"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Plate Heading",
+        "purpose": "Sentence headings of each plate, plate ink; 28px under 860px."
+      },
+      "readout": {
+        "displayName": "Readout",
+        "purpose": "The alignment chart's big fraction-at-risk figure."
+      },
+      "title": {
+        "displayName": "Sub-heading",
+        "purpose": "Table of ruin and method headings within a plate."
+      },
+      "figure": {
+        "displayName": "Ledger Figure",
+        "purpose": "Ledger values; tabular, condensed."
+      },
+      "entry": {
+        "displayName": "Entry",
+        "purpose": "Editable numbers in the rail; 17px in the bet fieldset."
+      },
+      "body": {
+        "displayName": "Reading Serif",
+        "purpose": "Reading column, 25rem beside a figure, 68ch single-column."
+      },
+      "label": {
+        "displayName": "Caption Label",
+        "purpose": "Uppercase figure captions; rail headings run 800 at width 75%, 0.12em."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Legends, chart notes, tooltips, hints."
+      }
+    },
+    "fonts": [
+      {
+        "family": "Archivo",
+        "files": [
+          "coin_flip_simulator/static/fonts/archivo-latin.woff2"
+        ],
+        "axes": {
+          "wght": "100 900",
+          "wdth": "62% 125%"
+        },
+        "license": "SIL OFL 1.1"
+      },
+      {
+        "family": "Source Serif 4",
+        "files": [
+          "source-serif-4-latin.woff2",
+          "source-serif-4-greek.woff2",
+          "source-serif-4-italic-latin.woff2",
+          "source-serif-4-italic-greek.woff2"
+        ],
+        "license": "SIL OFL 1.1",
+        "note": "Greek subset carries γ."
+      }
+    ],
+    "sequentialRamp": {
+      "light": [
+        "#eef1f3",
+        "#d3e0ef",
+        "#aac4e3",
+        "#7ea5d4",
+        "#5585c2",
+        "#3567aa",
+        "#1f4c88",
+        "#12335f"
+      ],
+      "dark": [
+        "#0e151d",
+        "#12273f",
+        "#183a5f",
+        "#1f4f82",
+        "#2c66a6",
+        "#4a86c7",
+        "#7ba8de",
+        "#b9d1ef"
+      ],
+      "purpose": "Ruin heatmap only (--seq)."
+    },
+    "strokePatterns": [
+      {
+        "name": "solid",
+        "dash": [],
+        "purpose": "Series one."
+      },
+      {
+        "name": "dashed",
+        "dash": [
+          7,
+          5
+        ],
+        "purpose": "Series two."
+      },
+      {
+        "name": "dotted",
+        "dash": [
+          1.5,
+          4.5
+        ],
+        "purpose": "Series three and reference lines."
+      }
+    ],
+    "chartConventions": [
+      {
+        "name": "label-halo",
+        "value": "4px round-joined stroke in --ground behind every chart label (canvas and SVG paint-order)",
+        "purpose": "Lines never cut through text."
+      },
+      {
+        "name": "isopleth-halo",
+        "value": "7px --ground stroke under the 2.5px orange straightedge",
+        "purpose": "Lifts the straightedge off scales."
+      },
+      {
+        "name": "forbidden-hatch",
+        "value": "45deg lines in --critical, 1.25px at 35% alpha on an 8px tile (canvas); 2px on a 6px tile (SVG)",
+        "purpose": "Zones the bet cannot enter."
+      },
+      {
+        "name": "series-weight",
+        "value": "2.5px data lines, 1–1.5px reference lines",
+        "purpose": "Data over reference."
+      }
+    ],
+    "shadows": [],
+    "focus": {
+      "value": "outline: 2px solid var(--iso); outline-offset: 3px; border-radius: 2px",
+      "purpose": "Every focusable element."
+    },
+    "motion": [
+      {
+        "name": "ink-shift",
+        "value": "150ms ease-out",
+        "purpose": "Colour, border and background changes on hover; handle radius growth (9 to 12)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transitions and animations off under prefers-reduced-motion",
+        "purpose": "Respect the setting."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "single-column-plates",
+        "value": "1180px"
+      },
+      {
+        "name": "phone",
+        "value": "860px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "text-button",
+      "description": "A word with an orange underline; the theme toggle and 'Draw new runs'.",
+      "html": "<button class=\"ds-textbtn\" type=\"button\">Draw new runs</button>",
+      "css": ".ds-textbtn{border:0;background:none;padding:4px 0;font-family:'Archivo','Source Serif 4',system-ui,sans-serif;font-weight:600;font-size:14px;line-height:1.2;color:var(--plate,#1d3557);cursor:pointer;text-decoration:underline;text-decoration-color:var(--iso,#d9530a);text-decoration-thickness:2px;text-underline-offset:5px;transition:color 150ms ease-out}.ds-textbtn:hover{color:var(--ink,#0f1720)}.ds-textbtn:focus-visible{outline:2px solid var(--iso,#d9530a);outline-offset:3px;border-radius:2px}"
+    },
+    {
+      "name": "Preset Chip",
+      "kind": "chip",
+      "refersTo": "preset-chip",
+      "description": "Starting-wealth presets; pressed fills with plate ink.",
+      "html": "<div class=\"ds-presets\"><button class=\"ds-chip\" aria-pressed=\"true\">$1,000</button><button class=\"ds-chip\" aria-pressed=\"false\">$10K</button><button class=\"ds-chip\" aria-pressed=\"false\">Kelly $42K</button></div>",
+      "css": ".ds-presets{display:flex;gap:6px;flex-wrap:wrap}.ds-chip{border:1px solid var(--rule-strong,#8d9aa7);background:transparent;border-radius:3px;padding:3px 7px;font-family:'Archivo','Source Serif 4',system-ui,sans-serif;font-weight:600;font-size:12px;line-height:1.3;font-variant-numeric:tabular-nums;color:var(--ink-2,#33414f);cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out,border-color 150ms ease-out}.ds-chip:hover{border-color:var(--plate,#1d3557);color:var(--ink,#0f1720)}.ds-chip[aria-pressed='true']{background:var(--plate,#1d3557);border-color:var(--plate,#1d3557);color:var(--ground,#eef1f3)}.ds-chip:focus-visible{outline:2px solid var(--iso,#d9530a);outline-offset:3px}"
+    },
+    {
+      "name": "Numeric Entry",
+      "kind": "input",
+      "refersTo": "numeric-entry",
+      "description": "An editable number on an orange underline; the underline turns plate ink on focus.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-l\">Starting wealth</span><span class=\"ds-entry\"><span class=\"ds-unit\">$</span><input value=\"1000\" inputmode=\"numeric\"></span><input class=\"ds-range\" type=\"range\" min=\"0\" max=\"100\" value=\"40\"></label>",
+      "css": ".ds-field{display:grid;gap:6px;width:236px;padding:16px;background:var(--ground-2,#e4e9ed);font-family:'Archivo','Source Serif 4',system-ui,sans-serif;}.ds-field-l{font-size:13px;font-weight:600;color:var(--ink-2,#33414f)}.ds-entry{display:flex;align-items:baseline;gap:2px;border-bottom:2px solid var(--iso,#d9530a);font-weight:600;font-size:22px;line-height:1.2;font-stretch:88%;font-variant-numeric:tabular-nums;color:var(--ink,#0f1720)}.ds-unit{color:var(--muted,#55626f);font-weight:500}.ds-entry input{width:100%;border:0;background:none;padding:2px 0 3px;font:inherit;font-stretch:inherit;color:inherit;outline-offset:4px}.ds-entry input:focus-visible{outline:2px solid var(--iso,#d9530a)}.ds-entry:focus-within{border-bottom-color:var(--plate,#1d3557)}.ds-range{-webkit-appearance:none;appearance:none;width:100%;height:22px;margin:0;background:transparent}.ds-range::-webkit-slider-runnable-track{height:1px;background:var(--plate,#1d3557)}.ds-range::-moz-range-track{height:1px;background:var(--plate,#1d3557)}.ds-range::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--iso,#d9530a);border:2px solid var(--ground-2,#e4e9ed)}.ds-range::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--iso,#d9530a);border:2px solid var(--ground-2,#e4e9ed)}"
+    },
+    {
+      "name": "Running Head",
+      "kind": "nav",
+      "refersTo": "running-head",
+      "description": "Sticky head with title, bet terms, plate locator and theme toggle over a plate-ink rule.",
+      "html": "<header class=\"ds-runhead\"><span class=\"ds-mark\">The coin-flip handbook</span><span class=\"ds-terms\">Heads +$1,050 · tails −$1,000 · p = 0.50</span><span class=\"ds-where\">Plate I of VIII</span><button class=\"ds-rh-btn\">Theme: auto</button></header>",
+      "css": ".ds-runhead{height:44px;display:flex;align-items:center;gap:28px;padding:0 32px;background:var(--ground,#eef1f3);border-bottom:1px solid var(--plate,#1d3557);font-family:'Archivo','Source Serif 4',system-ui,sans-serif;font-weight:600;font-size:13px;line-height:1;color:var(--plate,#1d3557);font-variant-numeric:tabular-nums}.ds-mark{font-weight:800;font-stretch:78%;font-size:15px;letter-spacing:.02em;text-transform:uppercase}.ds-terms{color:var(--ink-2,#33414f);font-weight:500}.ds-where{margin-left:auto;font-stretch:80%;letter-spacing:.06em;text-transform:uppercase}.ds-rh-btn{border:0;background:none;padding:4px 0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-color:var(--iso,#d9530a);text-decoration-thickness:2px;text-underline-offset:5px}.ds-rh-btn:hover{color:var(--ink,#0f1720)}.ds-rh-btn:focus-visible{outline:2px solid var(--iso,#d9530a);outline-offset:3px}"
+    },
+    {
+      "name": "Plate Contents",
+      "kind": "nav",
+      "refersTo": "rail",
+      "description": "Ruled contents list with roman numerals; the current plate goes ink and bold.",
+      "html": "<nav class=\"ds-rail\"><h2 class=\"ds-rail-h\">Plates</h2><ol class=\"ds-toc\"><li><a href=\"#\" aria-current=\"true\"><span class=\"ds-rn\">I</span>How big is the stake?</a></li><li><a href=\"#\"><span class=\"ds-rn\">II</span>Average vs. typical</a></li><li><a href=\"#\"><span class=\"ds-rn\">III</span>Where you end up</a></li></ol></nav>",
+      "css": ".ds-rail{width:236px;padding:20px 24px;background:var(--ground-2,#e4e9ed);font-family:'Archivo','Source Serif 4',system-ui,sans-serif;}.ds-rail-h{margin:0 0 12px;font-weight:800;font-size:13px;line-height:1;font-stretch:75%;letter-spacing:.12em;text-transform:uppercase;color:var(--plate,#1d3557)}.ds-toc{list-style:none;margin:0;padding:0}.ds-toc a{display:grid;grid-template-columns:40px 1fr;padding:5px 0;border-top:1px solid var(--rule,#c3ccd4);text-decoration:none;font-size:15px;line-height:1.3;color:var(--ink-2,#33414f);transition:color 150ms ease-out}.ds-toc li:last-child a{border-bottom:1px solid var(--rule,#c3ccd4)}.ds-toc a:hover{color:var(--ink,#0f1720)}.ds-toc a:focus-visible{outline:2px solid var(--iso,#d9530a);outline-offset:3px}.ds-rn{font-weight:700;font-stretch:72%;color:var(--plate,#1d3557)}.ds-toc a[aria-current='true']{color:var(--ink,#0f1720);font-weight:600}"
+    },
+    {
+      "name": "Ledger",
+      "kind": "custom",
+      "refersTo": "plate",
+      "description": "Ruled term/value list with condensed tabular figures; negatives in ruin red.",
+      "html": "<dl class=\"ds-ledger\"><div><dt>Kelly stake at your wealth</dt><dd>$24</dd></div><div><dt>Wealth where this stake is Kelly</dt><dd>$42K</dd></div><div><dt>Typical change per 100 flips</dt><dd class=\"neg\">−100%</dd></div></dl>",
+      "css": ".ds-ledger{width:360px;margin:0;border-top:1px solid var(--plate,#1d3557);font-family:'Archivo','Source Serif 4',system-ui,sans-serif;}.ds-ledger div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:9px 0;border-bottom:1px solid var(--rule,#c3ccd4)}.ds-ledger dt{font-size:14px;line-height:1.3;color:var(--ink-2,#33414f)}.ds-ledger dd{margin:0;font-size:20px;font-weight:650;font-stretch:85%;font-variant-numeric:tabular-nums;color:var(--ink,#0f1720)}.ds-ledger dd.neg{color:var(--critical,#b42318)}"
+    },
+    {
+      "name": "Figure Caption and Legend",
+      "kind": "custom",
+      "refersTo": "plate",
+      "description": "Uppercase plate-ink caption over a rule, then legend marks drawn with each series' own dash.",
+      "html": "<figure class=\"ds-fig\"><figcaption><span>Sample runs</span><span>500 flips · exact</span></figcaption><div class=\"ds-legend\"><span class=\"ds-key\"><svg width=\"26\" height=\"10\"><line x1=\"1\" y1=\"5\" x2=\"25\" y2=\"5\" stroke=\"var(--s1,#2a6fd0)\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>Mean</span><span class=\"ds-key\"><svg width=\"26\" height=\"10\"><line x1=\"1\" y1=\"5\" x2=\"25\" y2=\"5\" stroke=\"var(--s2,#139a74)\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-dasharray=\"7 5\"/></svg>Median</span><span class=\"ds-key\"><svg width=\"26\" height=\"10\"><line x1=\"1\" y1=\"5\" x2=\"25\" y2=\"5\" stroke=\"var(--s3,#c0479c)\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-dasharray=\"1.5 4.5\"/></svg>Yours</span></div></figure>",
+      "css": ".ds-fig{margin:0;width:420px;font-family:'Archivo','Source Serif 4',system-ui,sans-serif;}.ds-fig figcaption{display:flex;justify-content:space-between;gap:16px;padding-bottom:8px;margin-bottom:12px;border-bottom:1px solid var(--plate,#1d3557);font-weight:700;font-size:13px;line-height:1.3;font-stretch:80%;letter-spacing:.06em;text-transform:uppercase;color:var(--plate,#1d3557)}.ds-fig figcaption span+span{font-weight:500;letter-spacing:.03em;color:var(--muted,#55626f)}.ds-legend{display:flex;flex-wrap:wrap;gap:6px 20px;font-weight:500;font-size:13px;line-height:1.3;color:var(--ink-2,#33414f)}.ds-key{display:inline-flex;align-items:center;gap:7px}"
+    },
+    {
+      "name": "Tooltip",
+      "kind": "custom",
+      "refersTo": "tooltip",
+      "description": "Film ground, plate-ink hairline border, series marks per row.",
+      "html": "<div class=\"ds-tip\"><div class=\"ds-t-head\">Flip 120</div><div class=\"ds-t-row\"><span><i style=\"--c:var(--s1,#2a6fd0)\"></i>Mean</span><b>$4,030</b></div><div class=\"ds-t-row\"><span><i style=\"--c:var(--s2,#139a74)\"></i>Median</span><b>$0</b></div></div>",
+      "css": ".ds-tip{display:inline-block;min-width:190px;padding:9px 12px;background:var(--ground,#eef1f3);border:1px solid var(--plate,#1d3557);border-radius:3px;font-family:'Archivo','Source Serif 4',system-ui,sans-serif;font-weight:500;font-size:13px;line-height:1.45;font-variant-numeric:tabular-nums;color:var(--ink,#0f1720)}.ds-t-head{font-weight:700;color:var(--plate,#1d3557);margin-bottom:4px}.ds-t-row{display:flex;justify-content:space-between;gap:16px}.ds-t-row span{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2,#33414f)}.ds-t-row i{width:10px;height:3px;border-radius:2px;background:var(--c)}.ds-t-row b{font-weight:600}"
+    },
+    {
+      "name": "Alignment Chart Straightedge",
+      "kind": "custom",
+      "refersTo": "plate",
+      "description": "Two plate-ink scales joined by the orange isopleth over a ground halo, with grabbable orange handles.",
+      "html": "<svg class=\"ds-nomo\" viewBox=\"0 0 240 160\" width=\"240\" height=\"160\"><defs><pattern id=\"ds-hatch\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"6\" stroke=\"var(--critical,#b42318)\" stroke-width=\"2\"/></pattern></defs><rect x=\"112\" y=\"10\" width=\"16\" height=\"40\" fill=\"url(#ds-hatch)\" opacity=\".6\"/><line class=\"sc\" x1=\"30\" y1=\"10\" x2=\"30\" y2=\"150\"/><line class=\"sc\" x1=\"120\" y1=\"10\" x2=\"120\" y2=\"150\"/><line class=\"sc\" x1=\"210\" y1=\"10\" x2=\"210\" y2=\"150\"/><line class=\"halo\" x1=\"30\" y1=\"120\" x2=\"210\" y2=\"40\"/><line class=\"iso\" x1=\"30\" y1=\"120\" x2=\"210\" y2=\"40\"/><circle class=\"cross\" cx=\"120\" cy=\"80\" r=\"5\"/><circle class=\"h\" tabindex=\"0\" cx=\"30\" cy=\"120\" r=\"9\"/><circle class=\"h\" tabindex=\"0\" cx=\"210\" cy=\"40\" r=\"9\"/></svg>",
+      "css": ".ds-nomo{overflow:visible;background:var(--ground,#eef1f3)}.ds-nomo .sc{stroke:var(--plate,#1d3557);stroke-width:1.5}.ds-nomo .halo{stroke:var(--ground,#eef1f3);stroke-width:7;stroke-linecap:round}.ds-nomo .iso{stroke:var(--iso,#d9530a);stroke-width:2.5;stroke-linecap:round}.ds-nomo .cross{fill:var(--ground,#eef1f3);stroke:var(--iso,#d9530a);stroke-width:2.5}.ds-nomo .h{fill:var(--iso,#d9530a);stroke:var(--ground,#eef1f3);stroke-width:3;cursor:grab;transition:r 150ms ease-out}.ds-nomo .h:hover{r:12}.ds-nomo .h:focus{outline:none}.ds-nomo .h:focus-visible{stroke:var(--plate,#1d3557)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Nomogram Handbook",
+    "overview": "The surface is a bound handbook of engineering plates printed on cool drafting film. Each concept gets one plate: a sentence heading, a short serif reading column, and a figure you can read with a straightedge. Everything structural (scales, rules, headings, axes, captions) is drawn in a single Prussian-blue plate ink; everything the reader can move is drawn in one orange isopleth. Light mode is grey-blue film; dark mode is blue-black film with the same roles lifted for contrast.\n\nDensity is that of a technical reference, not a dashboard. Plates are separated by full-width plate-ink rules rather than boxed into cards, figures are framed only by a caption rule above them, and numbers are set in condensed Archivo with tabular figures so columns of results line up like a printed table. The rail on the left is the shared scrubber for every plate: contents above, \"Your numbers\" below, set as underlined orange fields.\n\nThe world rejects the chart-card dashboard beside a settings sidebar: no cards, no shadows, no filled panels around figures.",
+    "keyCharacteristics": [
+      "One plate ink (Prussian blue) for all structure; one orange for the reader's own position and controls.",
+      "Hairline rules, no cards, no shadows, near-zero radii.",
+      "Condensed Archivo (width axis 72–90%) for scales, figures and captions; Source Serif 4 for reading.",
+      "Series told apart by stroke pattern (solid, dashed, dotted) and direct labels as well as hue.",
+      "Every chart label is knocked out of the ground with a 4px ground-coloured halo."
+    ],
+    "rules": [
+      {
+        "name": "The One Straightedge Rule",
+        "body": "Orange marks the reader: their inputs, the handles and lines that move them, and where they stand in each chart and table. Nothing else is orange; a decorative orange element is a bug.",
+        "section": "colors"
+      },
+      {
+        "name": "The Plate Ink Rule",
+        "body": "All structure is one blue ink. Headings, scales, axes and rules never borrow a series hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Pattern-Plus-Hue Rule",
+        "body": "A data series is never identified by colour alone; it carries a stroke pattern and a direct label or legend mark drawn with the same dash.",
+        "section": "colors"
+      },
+      {
+        "name": "The Measured Things Are Condensed Rule",
+        "body": "Any number, scale label, or caption is Archivo with tabular figures; prose is never set in Archivo and numbers are never set in the serif.",
+        "section": "typography"
+      },
+      {
+        "name": "The Width Axis Is the Hierarchy Rule",
+        "body": "Rank is carried by width and weight within Archivo (72–90%), not by adding faces.",
+        "section": "typography"
+      },
+      {
+        "name": "The Drafting-Film Rule",
+        "body": "No box-shadow, no cards, no filled panels. If something must stand forward, give it a plate-ink rule or a tonal step, never a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** draw every scale, axis, heading and structural rule in plate ink (#1d3557 light, #a9c6ea dark).",
+      "**Do** reserve orange for the reader's inputs, the controls that change them, and the reader's own position in every chart and table.",
+      "**Do** give each data series a stroke pattern (solid, dashed 7 5, dotted 1.5 4.5) and a direct label as well as its hue.",
+      "**Do** knock chart text out of the ground with a 4px halo so lines never cut through labels.",
+      "**Do** set numbers in condensed Archivo with tabular figures.",
+      "**Do** mark ruin and loss in ruin red, and forbidden zones with the 45° red hatch."
+    ],
+    "donts": [
+      "**Don't** put figures in cards, filled panels, or anything with a shadow.",
+      "**Don't** use orange for decoration, emphasis, or status that the reader cannot move.",
+      "**Don't** set orange as small text on the light film; at 3.6:1 it is a mark colour, not a text ink.",
+      "**Don't** tell series apart by hue alone; the validated palette needs its stroke patterns in the 6–8 contrast band.",
+      "**Don't** introduce a third typeface or a system display face."
+    ]
+  }
+}

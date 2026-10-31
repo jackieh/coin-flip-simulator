@@ -9,6 +9,7 @@ self.onmessage = (e) => {
 
   const gridWealths = logspace(params.loss, params.loss * 1000, gridRows);
   const grid = ruinGrid(gridWealths, flips, params);
-  const table = ruinGrid(tableWealths, flips, params);
+  // The table of ruin always reaches 5,000 flips so its columns stay fixed.
+  const table = ruinGrid(tableWealths, Math.max(flips, 5000), params);
   self.postMessage({ id, type: 'grid', grid, table });
 };

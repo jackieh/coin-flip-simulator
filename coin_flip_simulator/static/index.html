@@ -3,148 +3,232 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coin flip: worth it?</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23eda100%22/%3E%3C/svg%3E" />
+  <title>The coin-flip handbook</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%225%22 fill=%22%231d3557%22/%3E%3Cpath d=%22M9 5v22M23 5v22%22 stroke=%22%23eef1f3%22 stroke-width=%222%22/%3E%3Cpath d=%22M6 22L26 9%22 stroke=%22%23d9530a%22 stroke-width=%223%22/%3E%3C/svg%3E" />
+  <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="style.css" />
+  <script>
+    // Apply the saved theme before first paint.
+    try {
+      const t = JSON.parse(localStorage.getItem('coinflip:v1') || '{}').theme;
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch {}
+  </script>
 </head>
 <body>
-  <header class="top">
-    <div>
-      <h1>Is the coin flip worth it?</h1>
-      <p class="lede">
-        Heads you win <b id="lede-win">$1,050</b>, tails you lose <b id="lede-loss">$1,000</b>.
-        On average that's <b id="lede-ev">+$25</b> per flip. But you're out of the game as soon as you can't
-        cover a loss. This page works out exactly how often that happens, and what the bet is really worth
-        at different starting bankrolls.
-      </p>
-    </div>
-    <button id="theme-toggle" class="ghost" type="button" title="Toggle light / dark">Theme: auto</button>
+  <a class="skip" href="#plate-1">Skip to the first plate</a>
+
+  <header class="runhead">
+    <span class="mark">The coin-flip handbook</span>
+    <span class="terms" id="rh-terms">Heads +$1,050 · tails −$1,000 · p = 0.50 · average +$25 a flip</span>
+    <span class="where" id="rh-where" aria-hidden="true">Plate I of VIII</span>
+    <button id="theme-toggle" class="textbtn" type="button" aria-label="Colour theme: auto. Click to change.">Theme: auto</button>
   </header>
 
-  <div class="layout">
-    <aside class="controls" aria-label="Simulation settings">
-      <section>
-        <h2>Your starting money</h2>
-        <label class="field">
-          <span>Starting wealth</span>
-          <input id="w0" type="number" min="0" step="100" value="1000" />
-        </label>
-        <input id="w0-slider" type="range" min="0" max="1000" step="1" aria-label="Starting wealth (log scale)" />
-        <div class="presets" id="presets"></div>
-      </section>
+  <div class="book">
+    <aside class="rail" aria-label="Contents and your numbers">
+      <nav aria-label="Plates">
+        <h2 class="rail-h">Plates</h2>
+        <ol class="toc" id="toc">
+          <li><a href="#plate-1"><span class="rn">I</span>How big is the stake?</a></li>
+          <li><a href="#plate-2"><span class="rn">II</span>Average vs. typical</a></li>
+          <li><a href="#plate-3"><span class="rn">III</span>Where you end up</a></li>
+          <li><a href="#plate-4"><span class="rn">IV</span>Going broke</a></li>
+          <li><a href="#plate-5"><span class="rn">V</span>How much is enough</a></li>
+          <li><a href="#plate-6"><span class="rn">VI</span>Utility &amp; risk aversion</a></li>
+          <li><a href="#plate-7"><span class="rn">VII</span>Certainty equivalent</a></li>
+          <li><a href="#plate-8"><span class="rn">VIII</span>Kelly &amp; growth</a></li>
+          <li><a href="#summary"><span class="rn">∑</span>Reading them together</a></li>
+        </ol>
+      </nav>
 
-      <section>
-        <h2>The bet</h2>
-        <label class="field"><span>Win on heads</span><input id="win" type="number" min="1" step="10" value="1050" /></label>
-        <label class="field"><span>Lose on tails</span><input id="loss" type="number" min="1" step="10" value="1000" /></label>
-        <label class="field"><span>Chance of heads</span><input id="p" type="number" min="0.01" max="0.99" step="0.01" value="0.5" /></label>
-      </section>
+      <details class="numbers-box" id="numbers-box" open>
+      <summary><span class="rail-h">Your numbers</span> <span class="sum" id="numbers-sum"></span></summary>
+      <form class="numbers" id="numbers" aria-labelledby="numbers-h" onsubmit="return false">
+        <h2 class="rail-h" id="numbers-h">Your numbers</h2>
 
-      <section>
-        <h2>How long you play</h2>
-        <label class="field"><span>Number of flips</span><input id="flips" type="number" min="1" max="5000" step="1" value="500" /></label>
-        <input id="flips-slider" type="range" min="1" max="5000" step="1" value="500" aria-label="Number of flips" />
-      </section>
+        <div class="field">
+          <label for="w0">Starting wealth</label>
+          <div class="entry"><span class="unit">$</span><input id="w0" type="number" inputmode="numeric" min="0" step="100" value="1000" /></div>
+          <input id="w0-slider" type="range" min="0" max="1000" step="1" aria-label="Starting wealth, log scale" />
+          <div class="presets" id="presets" role="group" aria-label="Starting wealth presets"></div>
+        </div>
 
-      <section>
-        <h2>How much you dislike risk</h2>
-        <label class="field">
-          <span>Risk aversion γ</span>
-          <output id="gamma-out">1</output>
-        </label>
-        <input id="gamma" type="range" min="0" max="5" step="0.25" value="1" aria-label="Risk aversion" />
-        <p class="hint">0 = only the average matters. 1 = log utility (losing half your money hurts as much as doubling it helps). Higher = more cautious.</p>
-      </section>
+        <div class="field">
+          <label for="flips">Flips played</label>
+          <div class="entry"><input id="flips" type="number" inputmode="numeric" min="1" max="5000" step="1" value="500" /></div>
+          <input id="flips-slider" type="range" min="1" max="5000" step="1" value="500" aria-label="Flips played" />
+        </div>
 
-      <section>
-        <h2>Sample paths</h2>
-        <label class="field">
-          <span>Paths to draw</span>
-          <select id="paths">
-            <option>50</option><option>100</option><option selected>200</option><option>500</option>
-          </select>
-        </label>
-        <button id="reseed" type="button" class="ghost">Re-roll random paths</button>
-      </section>
-      <p class="status" id="status" aria-live="polite"></p>
+        <div class="field">
+          <label for="gamma">Risk aversion <i>γ</i></label>
+          <div class="entry"><output id="gamma-out" for="gamma">1</output></div>
+          <input id="gamma" type="range" min="0" max="5" step="0.25" value="1" />
+          <p class="hint">0 cares only about the average. 1 is log utility. Higher is more cautious.</p>
+        </div>
+
+        <fieldset class="field bet">
+          <legend>The bet</legend>
+          <label><span>Win</span><span class="entry"><span class="unit">$</span><input id="win" type="number" min="1" step="10" value="1050" /></span></label>
+          <label><span>Lose</span><span class="entry"><span class="unit">$</span><input id="loss" type="number" min="1" step="10" value="1000" /></span></label>
+          <label><span>P(heads)</span><span class="entry"><input id="p" type="number" min="0.01" max="0.99" step="0.01" value="0.5" /></span></label>
+        </fieldset>
+      </form>
+      </details>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
     </aside>
 
-    <main>
-      <section class="tiles" id="tiles"></section>
-      <section class="verdict" id="verdict"></section>
+    <main id="main">
+      <!-- I -->
+      <section class="plate" id="plate-1" aria-labelledby="h1-title">
+        <div class="text">
+          <h1 id="h1-title"><span class="pn">I.</span> <span id="p1-head">At $1,000, the stake is 100% of what you have.</span></h1>
+          <p>Whether a bet is dangerous depends on its size <em>relative to your wealth</em>, not on its dollar edge. This flip puts <b data-v="loss">$1,000</b> on the line. The growth-maximising stake for these odds, the <dfn>Kelly fraction</dfn>, is <b data-v="kellyF">2.38%</b> of wealth, so this exact flip is sized right once you have <b data-v="kellyW">$42K</b>.</p>
+          <p id="p1-be">Someone with log utility accepts it once the stake falls under <b data-v="beF1">4.76%</b> of wealth, from about <b data-v="beW1">$21K</b>. Above that fraction, betting repeatedly makes the typical outcome shrink even though every flip has a positive average.</p>
+          <dl class="ledger" id="p1-ledger"></dl>
+          <p class="howto"><b>Reading the plate.</b> The straightedge runs from your wealth on the left scale (more wealth sits lower) to the stake on the right. Where it crosses the middle scale is the share of your wealth at risk. Drag either orange end, or focus one and use the arrow keys. Moving the stake scales the whole bet and keeps the odds.</p>
+        </div>
+        <figure class="fig fig-nomo">
+          <figcaption><span>Alignment chart</span><span>stake ÷ wealth = fraction at risk</span></figcaption>
+          <div class="nomo" id="nomo"></div>
+          <ul class="nomo-key" id="nomo-key"></ul>
+        </figure>
+      </section>
 
-      <article class="card">
-        <header>
-          <h3>What playing actually looks like</h3>
-          <p>Each faint line is one simulated run of <span class="nflips">500</span> flips. <span class="red-word">Red</span> runs went broke and had to stop. The thick lines are the <b>exact</b> average and median across every possible outcome.</p>
+      <!-- II -->
+      <section class="plate" id="plate-2" aria-labelledby="h2-title">
+        <div class="text">
+          <h2 id="h2-title"><span class="pn">II.</span> <span id="p2-head">The average and the typical player disagree.</span></h2>
+          <p>The <dfn>expected value</dfn> is the average over every possible run. Here it is <b data-v="ev">+$25</b> a flip. But you only collect that edge while you are still playing, and one bad streak ends the game.</p>
+          <p>So the <dfn>mean</dfn> (solid line) is carried by a minority who get lucky early and pull away. The <dfn>median</dfn> (dashed) is what half of all players beat. When the two diverge, the average describes almost nobody.</p>
+          <div class="local">
+            <label>Runs drawn
+              <select id="paths"><option>50</option><option>100</option><option selected>200</option><option>500</option></select>
+            </label>
+            <button id="reseed" type="button" class="textbtn">Draw new runs</button>
+          </div>
+        </div>
+        <figure class="fig">
+          <figcaption><span>Sample runs</span><span><span class="nflips">500</span> flips · mean &amp; median exact</span></figcaption>
           <div class="legend" id="legend-paths"></div>
-        </header>
-        <div id="chart-paths"></div>
-      </article>
+          <div id="chart-paths"></div>
+          <p class="chart-note">Run the pointer across the chart to <b>read any flip</b>: exact mean, median and share broke at that point.</p>
+        </figure>
+      </section>
 
-      <article class="card">
-        <header>
-          <h3>Chance you're broke, or ahead, after each flip</h3>
-          <p>Exact probabilities. The flat reference line is the chance you <em>eventually</em> go broke if you never stop.</p>
-          <div class="legend" id="legend-ruin"></div>
-        </header>
-        <div id="chart-ruin"></div>
-      </article>
-
-      <article class="card">
-        <header>
-          <h3>Chance of going broke, by starting wealth and number of flips</h3>
-          <p>Each row is a different starting bankroll; read across to see the risk build up over more flips. Lines mark where the risk passes 1%, 10%, 50% and 90%. The horizontal marker is your current starting wealth.</p>
-          <div class="legend" id="legend-heat"></div>
-        </header>
-        <div id="chart-heat"></div>
-      </article>
-
-      <article class="card">
-        <header>
-          <h3>How the picture changes with starting wealth</h3>
-          <p>For every starting bankroll: the chance of going broke within <span class="nflips">500</span> flips, if you play forever, and the chance of being ahead after <span class="nflips">500</span> flips.</p>
-          <div class="legend" id="legend-wealth"></div>
-        </header>
-        <div id="chart-wealth"></div>
-      </article>
-
-      <article class="card">
-        <header>
-          <h3>What one flip is worth to <em>you</em>, by wealth</h3>
-          <p>
-            The <b>certainty equivalent</b>: the guaranteed cash you'd trade the flip for. A risk-neutral player always
-            values it at the average, +$25. With risk aversion it's negative when you're poor (one loss hurts more than
-            one win helps) and turns positive only past a <b>break-even wealth</b>.
-          </p>
-          <div class="legend" id="legend-ce"></div>
-        </header>
-        <div id="chart-ce"></div>
-      </article>
-
-      <article class="card">
-        <header>
-          <h3>Where you end up after <span class="nflips">500</span> flips</h3>
-          <p>The exact distribution of final wealth. The separate bar on the left is everyone who went broke along the way.</p>
+      <!-- III -->
+      <section class="plate" id="plate-3" aria-labelledby="h3-title">
+        <div class="text">
+          <h2 id="h3-title"><span class="pn">III.</span> <span id="p3-head">Where everyone ends up.</span></h2>
+          <p>This is the exact distribution of final wealth after <b class="nflips">500</b> flips. It's lopsided: a block of players who went broke, then a long right tail of survivors.</p>
+          <p id="p3-text2">That tail is where the average lives. A distribution like this is called <dfn>positively skewed</dfn>, and for it, mean &gt; median is the rule, not an accident.</p>
+        </div>
+        <figure class="fig">
+          <figcaption><span>Final wealth</span><span>after <span class="nflips">500</span> flips · exact</span></figcaption>
           <div class="legend" id="legend-hist"></div>
-        </header>
-        <div id="chart-hist"></div>
-      </article>
+          <div id="chart-hist"></div>
+        </figure>
+      </section>
 
-      <details class="card table-card">
-        <summary>Table: the same numbers at a few starting bankrolls</summary>
-        <div id="table"></div>
-      </details>
+      <!-- IV -->
+      <section class="plate" id="plate-4" aria-labelledby="h4-title">
+        <div class="text">
+          <h2 id="h4-title"><span class="pn">IV.</span> <span id="p4-head">Going broke happens early.</span></h2>
+          <p><dfn>Risk of ruin</dfn> is the chance you hit the point where you can't cover the next loss and have to stop. Ruin is <em>absorbing</em>: once you're there you can't win your way back, so the chance only ever rises.</p>
+          <p>Most of it arrives in the first few dozen flips, while you're still close to the edge. If you survive that, the +$25 edge slowly carries you away from it. The flat line is the chance of going broke <em>eventually</em> if you never stop.</p>
+        </div>
+        <figure class="fig">
+          <figcaption><span>Broke and ahead, flip by flip</span><span>exact</span></figcaption>
+          <div class="legend" id="legend-ruin"></div>
+          <div id="chart-ruin"></div>
+          <p class="chart-note">Run the pointer across the chart to <b>read any flip</b>: exact chances of being broke or ahead.</p>
+        </figure>
+        <div class="table-wrap">
+          <h3 class="table-h">Table of ruin: chance of being broke by flip <i>n</i>, by starting wealth</h3>
+          <div id="table" class="ruin-table"><p class="pending">Computing the table…</p></div>
+          <p class="table-note">Exact to the shown precision. The highlighted row is your starting wealth and the highlighted column is your number of flips. “Forever” uses the Lundberg bound described at the end.</p>
+        </div>
+      </section>
 
-      <article class="card notes">
-        <h3>How this is calculated</h3>
-        <ul>
-          <li><b>Going broke</b> means your wealth falls below the loss amount, so you can't cover the next tails. You stop and keep whatever's left.</li>
-          <li>After <i>n</i> flips with <i>h</i> heads your wealth is <code>start + win·h − loss·(n−h)</code>. That's only <i>n</i>+1 possible states, so every probability here (except the random sample paths) is <b>exact</b>, computed by dynamic programming rather than estimated by simulation.</li>
-          <li><b>Going broke if you never stop</b> uses the fact that <code>e<sup>−R·W</sup></code> stays constant on average from flip to flip, where <i>R</i> solves <code>p·e<sup>−R·win</sup> + q·e<sup>R·loss</sup> = 1</code>. That pins the long-run probability within a narrow band, and the band gets tighter the more flips are computed.</li>
-          <li><b>Certainty equivalent</b> uses CRRA utility <code>u(W) = W<sup>1−γ</sup>/(1−γ)</code> (log when γ = 1). At γ = 1, betting this flip is Kelly-optimal when the $1,000 stake is <span id="kelly-frac">2.38%</span> of your wealth.</li>
-        </ul>
-      </article>
+      <!-- V -->
+      <section class="plate" id="plate-5" aria-labelledby="h5-title">
+        <div class="text">
+          <h2 id="h5-title"><span class="pn">V.</span> <span id="p5-head">How much money makes it safe?</span></h2>
+          <p>Each row is a different starting bankroll. Reading left to right, the risk accumulates as you play more flips. The contour lines mark where it passes 1%, 10%, 50% and 90%. The orange line is you.</p>
+          <p id="p5-text">Survival needs a cushion of many losses, not one. Ruin falls roughly exponentially with wealth: each extra ~$21K of bankroll cuts the forever-risk by a factor of <i>e</i>.</p>
+        </div>
+        <figure class="fig">
+          <figcaption><span>Chance of going broke</span><span>starting wealth × flips played</span></figcaption>
+          <div class="legend" id="legend-heat"></div>
+          <div id="chart-heat"></div>
+          <p class="chart-note">Click or drag up and down the chart to <b>change your starting wealth</b>.</p>
+        </figure>
+      </section>
+
+      <!-- VI -->
+      <section class="plate" id="plate-6" aria-labelledby="h6-title">
+        <div class="text">
+          <h2 id="h6-title"><span class="pn">VI.</span> <span id="p6-head">Why a loss hurts more than a win helps.</span></h2>
+          <p>A <dfn>utility function</dfn> turns wealth into how much that wealth is worth to you. If it curves downward (it's <em>concave</em>), each extra dollar matters a little less than the last. So losing $1,000 costs more satisfaction than winning $1,050 adds.</p>
+          <p>The family used here is <dfn>CRRA</dfn>, constant relative risk aversion: <code>u(W) = W<sup>1−γ</sup>/(1−γ)</code>, and <code>ln W</code> at γ = 1. Its parameter γ is your <dfn>relative risk aversion</dfn>, meaning you dislike losing a given <em>percentage</em> of wealth equally at any wealth. Your <dfn>absolute risk aversion</dfn>, γ/W, fades as you get richer, which is why the same flip looks better from a bigger pile.</p>
+          <dl class="ledger" id="p6-ledger"></dl>
+          <p class="howto"><b>Reading the plate.</b> Each curve is scaled to match a dollar-for-dollar line at your current wealth. The chord joins the two outcomes of one flip. Its height at the average outcome is your <em>expected utility</em>. Slide left until the curve reaches that height, and you have the sure amount you'd swap the flip for.</p>
+        </div>
+        <figure class="fig">
+          <figcaption><span>Utility around your wealth</span><span>one flip, in dollars of utility</span></figcaption>
+          <div class="legend" id="legend-util"></div>
+          <div id="chart-util"></div>
+        </figure>
+      </section>
+
+      <!-- VII -->
+      <section class="plate" id="plate-7" aria-labelledby="h7-title">
+        <div class="text">
+          <h2 id="h7-title"><span class="pn">VII.</span> <span id="p7-head">What one flip is worth to you.</span></h2>
+          <p>The <dfn>certainty equivalent</dfn> (CE) is the guaranteed cash that you'd find exactly as good as taking the flip. The gap between the average and the CE is the <dfn>risk premium</dfn>: what the uncertainty costs you.</p>
+          <p>A risk-neutral player (γ = 0) always values the flip at the average, +$25. With any risk aversion it's worth less than nothing to the poor and turns positive only past a <dfn>break-even wealth</dfn>, which doubles with each doubling of γ, roughly.</p>
+        </div>
+        <figure class="fig">
+          <figcaption><span>Certainty equivalent of one flip</span><span>by wealth when offered</span></figcaption>
+          <div class="legend" id="legend-ce"></div>
+          <div id="chart-ce"></div>
+          <p class="chart-note">Click or drag across the chart to <b>change your starting wealth</b>.</p>
+        </figure>
+      </section>
+
+      <!-- VIII -->
+      <section class="plate" id="plate-8" aria-labelledby="h8-title">
+        <div class="text">
+          <h2 id="h8-title"><span class="pn">VIII.</span> <span id="p8-head">Stake the Kelly fraction and your money grows fastest.</span></h2>
+          <p>If you bet a fixed fraction <i>f</i> of your wealth every time, the typical (median) result compounds at <code>g(f) = p·ln(1 + b·f) + q·ln(1 − f)</code> per flip, where <i>b</i> = win ÷ loss. The <dfn>Kelly criterion</dfn> picks the <i>f</i> that maximises <i>g</i>: <code>f* = p − q/b</code>.</p>
+          <p>Bet less and you grow more slowly but more smoothly. Bet <em>more</em> and growth falls, reaching zero at about twice Kelly, even though every single flip still has a positive average. <dfn>Half-Kelly</dfn> keeps three quarters of the growth with half the swings, which is why practitioners like it. A CRRA investor with risk aversion γ bets roughly Kelly ÷ γ.</p>
+          <dl class="ledger" id="p8-ledger"></dl>
+        </div>
+        <figure class="fig">
+          <figcaption><span>Typical growth vs. fraction staked</span><span>median change per 100 flips</span></figcaption>
+          <div class="legend" id="legend-kelly"></div>
+          <div id="chart-kelly"></div>
+          <p class="chart-note">Click or drag across the chart to <b>change the stake</b> (the odds stay the same).</p>
+        </figure>
+      </section>
+
+      <!-- Summary -->
+      <section class="plate summary" id="summary" aria-labelledby="hs-title">
+        <div class="text">
+          <h2 id="hs-title"><span class="pn">∑</span> Reading the plates together</h2>
+          <div class="verdict" id="verdict"></div>
+          <dl class="ledger wide" id="summary-ledger"></dl>
+        </div>
+        <div class="method">
+          <h3>How this is calculated</h3>
+          <ul>
+            <li><b>Going broke</b> means your wealth falls below the loss amount, so you can't cover the next tails. You stop and keep whatever's left.</li>
+            <li>After <i>n</i> flips with <i>h</i> heads your wealth is <code>start + win·h − loss·(n−h)</code>. There are only <i>n</i> + 1 possible states, so every probability here except the sample runs is <b>exact</b>, computed by dynamic programming, not estimated by simulation.</li>
+            <li><b>Going broke if you never stop</b> uses the fact that <code>e<sup>−R·W</sup></code> is a martingale, where <i>R</i> solves <code>p·e<sup>−R·win</sup> + q·e<sup>R·loss</sup> = 1</code> (Lundberg's adjustment coefficient, from insurance ruin theory). That pins the long-run chance within a band that narrows the more flips are computed.</li>
+            <li><b>Utility and certainty equivalents</b> use CRRA utility <code>u(W) = W<sup>1−γ</sup>/(1−γ)</code> (log at γ = 1). The Kelly fraction is <code>p − q·loss/win</code>; for this flip it's <span data-v="kellyF">2.38%</span>.</li>
+          </ul>
+        </div>
+      </section>
     </main>
   </div>
 
