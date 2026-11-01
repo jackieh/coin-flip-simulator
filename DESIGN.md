@@ -225,7 +225,7 @@ Rectilinear drafting geometry. Radii are a hair (2px for focus rings, legend swa
 
 ### Buttons
 Words, not boxes.
-- **Text button:** Archivo 600 14px in plate ink, no background, a 2px orange underline offset 5px; hover darkens to ink. Used for the theme toggle and "Draw new runs".
+- **Text button:** Archivo 600 14px in plate ink, no background, a 2px orange underline offset 5px; hover darkens to ink; disabled goes muted and drops the underline. Used for the theme toggle, "Draw new runs", and "Reset to defaults" (right-aligned on the "Your numbers" heading line, disabled while every number is already at its default).
 - **Preset chip:** 1px rule-strong border, 3px radius, 600 12px tabular; hover borders in plate ink; pressed fills plate ink with film text.
 
 ### Inputs / Fields

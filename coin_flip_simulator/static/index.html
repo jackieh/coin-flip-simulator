@@ -45,7 +45,10 @@
       <details class="numbers-box" id="numbers-box" open>
       <summary><span class="rail-h">Your numbers</span> <span class="sum" id="numbers-sum"></span></summary>
       <form class="numbers" id="numbers" aria-labelledby="numbers-h" onsubmit="return false">
-        <h2 class="rail-h" id="numbers-h">Your numbers</h2>
+        <div class="numbers-head">
+          <h2 class="rail-h" id="numbers-h">Your numbers</h2>
+          <button id="reset" class="textbtn" type="button">Reset to defaults</button>
+        </div>
 
         <div class="field">
           <label for="w0">Starting wealth</label>

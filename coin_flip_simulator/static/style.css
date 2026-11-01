@@ -145,6 +145,7 @@ button, input, select { font: inherit; color: inherit; }
   transition: color 150ms ease-out;
 }
 .textbtn:hover { color: var(--ink); }
+.textbtn:disabled { color: var(--muted); text-decoration-color: transparent; cursor: default; }
 
 /* ---------------------------------------------------------------- running head */
 .runhead {
@@ -208,7 +209,9 @@ button, input, select { font: inherit; color: inherit; }
 .toc a[aria-current='true'] .rn { color: var(--ink); text-decoration: underline; text-decoration-color: var(--iso); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 
 .numbers { display: grid; gap: 18px; }
-.numbers .rail-h { margin-bottom: -6px; }
+.numbers-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: -6px; }
+.numbers-head .rail-h { margin: 0; }
+.numbers-head .textbtn { font-size: 13px; }
 .field { display: grid; align-content: start; gap: 6px; margin: 0; padding: 0; border: 0; min-width: 0; }
 .field > label, .field > legend { font-size: 13px; font-weight: 600; color: var(--ink-2); padding: 0; }
 .field i { font-family: var(--serif); }
@@ -504,6 +507,7 @@ main { min-width: 0; }
   .numbers-box[open] > summary::after { content: 'Done'; }
   .numbers-box[open] > summary { margin-bottom: 16px; }
   .numbers #numbers-h { display: none; }
+  .numbers-head { grid-column: 1 / -1; justify-content: flex-end; margin: -8px 0 -4px; }
   .numbers { grid-template-columns: 1fr 1fr; gap: 18px 20px; }
   .numbers .rail-h, .numbers .field:first-of-type, .bet, .status { grid-column: 1 / -1; }
   .plate { padding: 36px 16px 44px; }

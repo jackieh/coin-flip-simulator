@@ -28,28 +28,24 @@ const fmtInt = (n) => n.toLocaleString('en-US');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 // ---------------------------------------------------------------- state (persisted)
+/** The numbers "Reset to defaults" restores. Theme is a viewing preference and is left alone. */
+const DEFAULTS = Object.freeze({ w0: 1000, win: 1050, loss: 1000, p: 0.5, flips: 500, gamma: 1, pathCount: 200, seed: 1 });
 const state = {
-  w0: 1000,
-  win: 1050,
-  loss: 1000,
-  p: 0.5,
-  flips: 500,
-  gamma: 1,
-  pathCount: 200,
-  seed: 1,
+  ...DEFAULTS,
   theme: 'auto',
   main: null, // { dist, sample }
   grid: null, // { grid, table }
 };
 try {
   const saved = JSON.parse(localStorage.getItem(STORE) || '{}');
-  for (const k of ['w0', 'win', 'loss', 'p', 'flips', 'gamma', 'pathCount', 'seed']) {
+  for (const k of Object.keys(DEFAULTS)) {
     if (typeof saved[k] === 'number' && isFinite(saved[k])) state[k] = saved[k];
   }
   if (['auto', 'light', 'dark'].includes(saved.theme)) state.theme = saved.theme;
 } catch {}
 let saveTimer = null;
 function save() {
+  syncResetButton();
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     const { w0, win, loss, p, flips, gamma, pathCount, seed, theme } = state;
@@ -212,6 +208,23 @@ function sliderToWealth(v) {
   return Math.max(state.loss, niceRound(Math.exp(lo + ((hi - lo) * v) / 1000)));
 }
 
+const atDefaults = () => Object.keys(DEFAULTS).every((k) => state[k] === DEFAULTS[k]);
+function syncResetButton() {
+  $('reset').disabled = atDefaults();
+}
+
+function resetNumbers() {
+  Object.assign(state, DEFAULTS);
+  syncRail();
+  buildNomo();
+  nomoAnimate();
+  // the button disables itself, so hand focus to the first field instead of dropping it on the page
+  $('w0').focus({ preventScroll: true });
+  save();
+  renderInstant();
+  compute();
+}
+
 function syncRail() {
   $('w0').value = state.w0;
   $('w0-slider').value = wealthToSlider(state.w0);
@@ -224,6 +237,7 @@ function syncRail() {
   $('p').value = state.p;
   $('paths').value = String(state.pathCount);
   renderPresets();
+  syncResetButton();
 }
 
 function renderPresets() {
@@ -334,6 +348,7 @@ function bindControls() {
     save();
     compute();
   });
+  $('reset').addEventListener('click', resetNumbers);
   $('reseed').addEventListener('click', () => {
     state.seed = (state.seed * 1103515245 + 12345) >>> 0;
     save();
