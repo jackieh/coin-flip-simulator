@@ -10,6 +10,7 @@ import {
   kelly,
   certaintyEquivalent,
   ruinGrid,
+  scaleBet,
 } from './coin_flip_simulator/static/sim.js';
 
 const base = { win: 1050, loss: 1000, p: 0.5 };
@@ -85,4 +86,17 @@ test('ruinGrid rows agree with exactDistribution', () => {
   const d = exactDistribution({ ...base, w0: 8000 }, 150);
   assert.ok(Math.abs(rows[1].curve[150] - d.ruin[150]) < 1e-6);
   assert.ok(Math.abs(rows[1].ahead - d.ahead[150]) < 1e-9);
+});
+
+test('rescaling the stake keeps the odds, however far it is dragged', () => {
+  assert.deepEqual(scaleBet(base, 10), { loss: 10, win: 10.5 });
+  const k0 = kelly(base).fraction;
+  const down = Array.from({ length: 61 }, (_, i) => 1000 * 10 ** (-2 * i / 60));
+  const up = Array.from({ length: 61 }, (_, i) => 10 * 10 ** (2 * i / 60));
+  for (const L of [...down, ...up]) {
+    const nice = Math.round(L / 10 ** (Math.floor(Math.log10(L)) - 1)) * 10 ** (Math.floor(Math.log10(L)) - 1);
+    const bet = scaleBet(base, nice);
+    assert.ok(Math.abs(kelly({ ...bet, p: 0.5 }).fraction / k0 - 1) < 1e-9, `stake ${nice}: ${bet.win}/${bet.loss}`);
+  }
+  assert.deepEqual(scaleBet(base, 1000), { loss: 1000, win: 1050 });
 });

@@ -306,6 +306,15 @@ export function kelly({ win, loss, p }) {
   return { fraction: f, wealth: f > 0 ? loss / f : Infinity };
 }
 
+/**
+ * Rescale a bet to a new loss amount, keeping the odds of the anchor bet.
+ * The win is rounded to cents, so the odds survive any number of rescales.
+ * Pass the bet the user typed (the anchor), not a previously rescaled one.
+ */
+export function scaleBet({ win, loss }, L) {
+  return { loss: L, win: Math.max(0.01, Math.round(((L * win) / loss) * 100) / 100) };
+}
+
 /** Smallest wealth at which one flip has a non-negative certainty equivalent. */
 export function breakEvenWealth(params, gamma = 1) {
   const { loss } = params;

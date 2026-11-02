@@ -242,6 +242,9 @@ Words, not boxes.
 - **Legend marks:** 26×10 SVG strokes drawn with the series' own dash (2.5px, or 1.25px for reference lines), 12px swatches for bars, an 18% wash swatch for bands.
 - **Tooltip:** film ground, 1px plate-ink border, 3px radius, plate-ink head, rows with a 10×3 series mark.
 
+### Cross-reference
+An in-prose link to another plate ("why this fraction, Plate VIII"): plate-ink text with a 1px plate-ink underline offset 3px, going ink on hover. It is never orange, because it moves the reader through the book, not their numbers.
+
 ### Ledger
 A definition list ruled in plate ink at the top and hairlines between rows: slate 14px term left, condensed 20px tabular value right, ruin red for negatives.
 
@@ -250,6 +253,9 @@ Three parallel plate-ink scales (wealth, fraction at risk, stake) with major and
 
 ### Table of Ruin
 Right-aligned tabular cells with hairline rows, uppercase condensed plate-ink headers over a 2px plate-ink rule, the reader's flip column shaded in plate zone and the reader's wealth row washed in isopleth orange.
+
+### Table of growth
+Plate VIII's reading-column table, sharing the `.plate-table` styling with the Table of ruin at a tighter 17px heading and padding. Columns: stake (row label as a muted caption beneath it), what each heads and each tails multiplies wealth by (4 dp, ×), and the typical change over 100 flips (the growth curve's own height, signed, ruin red when negative). Rows are half-Kelly, Kelly (bold), growth stops, and you (isopleth wash, merged into a matching row instead of repeated). Under 860px the "Each" in the headers drops so it fits without scrolling.
 
 ## Do's and Don'ts
 

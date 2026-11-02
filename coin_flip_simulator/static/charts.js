@@ -78,6 +78,8 @@ export function money(x, { compact = true, sign = false } = {}) {
   const a = Math.abs(x);
   if (compact && a >= 1e6) return `${s}$${trim(a / 1e6)}M`;
   if (compact && a >= 1e4) return `${s}$${trim(a / 1e3)}K`;
+  // small amounts keep their cents (a $10 stake on these odds wins $10.50, not "$11")
+  if (a < 100 && Math.abs(a - Math.round(a)) >= 0.005) return `${s}$${a.toFixed(2)}`;
   return `${s}$${Math.round(a).toLocaleString('en-US')}`;
 }
 function trim(x) {

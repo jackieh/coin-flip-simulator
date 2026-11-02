@@ -126,6 +126,9 @@ dfn { font-style: italic; font-weight: 600; }
 code { font: 500 0.82em/1 var(--sans); font-stretch: 90%; color: var(--plate); white-space: nowrap; }
 sup { line-height: 0; }
 a { color: inherit; }
+/* in-prose cross-reference: plate ink, not orange (it moves the reader, not their numbers) */
+a.xref { color: var(--plate); text-decoration: underline; text-decoration-color: var(--plate); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a.xref:hover { color: var(--ink); text-decoration-color: var(--ink); }
 button, input, select { font: inherit; color: inherit; }
 
 .skip { position: absolute; left: -999px; top: 8px; z-index: 10; background: var(--ground); padding: 6px 10px; }
@@ -439,10 +442,10 @@ main { min-width: 0; }
 /* ---------------------------------------------------------------- table of ruin */
 .table-wrap { grid-column: 1 / -1; margin-top: 48px; min-width: 0; }
 .table-h { font: 700 19px/1.3 var(--sans); font-stretch: 86%; color: var(--plate); margin-bottom: 12px; }
-.ruin-table { overflow-x: auto; }
-.ruin-table table { width: 100%; border-collapse: collapse; font: 500 15px/1.3 var(--sans); font-variant-numeric: tabular-nums; }
-.ruin-table th, .ruin-table td { padding: 8px 14px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
-.ruin-table thead th {
+.plate-table { overflow-x: auto; }
+.plate-table table { width: 100%; border-collapse: collapse; font: 500 15px/1.3 var(--sans); font-variant-numeric: tabular-nums; }
+.plate-table th, .plate-table td { padding: 8px 14px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.plate-table thead th {
   font-weight: 700;
   font-size: 13px;
   font-stretch: 82%;
@@ -452,12 +455,28 @@ main { min-width: 0; }
   border-bottom: 2px solid var(--plate);
   vertical-align: bottom;
 }
-.ruin-table th[scope='row'] { text-align: left; font-weight: 600; color: var(--ink); }
-.ruin-table .note { display: block; font-size: 12px; font-weight: 500; color: var(--muted); text-transform: none; letter-spacing: 0; }
-.ruin-table td.z { color: var(--muted); }
+.plate-table th[scope='row'] { text-align: left; font-weight: 600; color: var(--ink); }
+.plate-table .note { display: block; font-size: 12px; font-weight: 500; color: var(--muted); text-transform: none; letter-spacing: 0; }
+.plate-table td.z { color: var(--muted); }
+.plate-table td.neg { color: var(--critical); }
+.plate-table tr.you th, .plate-table tr.you td { background: var(--iso-wash); font-weight: 700; color: var(--ink); }
+.plate-table tr.you td.neg { color: var(--critical); }
 .ruin-table .col-n { background: var(--zone); }
-.ruin-table tr.you th, .ruin-table tr.you td { background: var(--iso-wash); font-weight: 700; color: var(--ink); }
 .ruin-table tr.you td.col-n { background: color-mix(in srgb, var(--iso-wash), var(--zone)); }
+
+/* the table of growth sits in the reading column, so it runs tighter than the table of ruin */
+.growth { margin: 26px 0 24px; }
+.growth .table-h { font-size: 17px; margin-bottom: 8px; }
+.growth th, .growth td { padding: 7px 8px 7px 10px; }
+.growth th:first-child { padding-left: 8px; }
+.growth tr.lead th, .growth tr.lead td { font-weight: 700; color: var(--ink); }
+.growth thead th { white-space: normal; }
+.growth thead th:first-child { text-align: left; }
+.formula { white-space: nowrap; }
+.growth .table-note { margin-top: 8px; }
+.growth + p { margin-top: 0; }
+.growth ~ .ledger { margin-top: 14px; }
+
 .table-note { font: 13px/1.5 var(--sans); color: var(--muted); margin-top: 10px; max-width: 70ch; }
 .pending { font: 14px var(--sans); color: var(--muted); }
 
@@ -514,6 +533,7 @@ main { min-width: 0; }
   .plate h1, .plate h2 { font-size: 28px; }
   .nomo { height: 520px; }
   .nomo-key { display: block; }
+  .growth .wide { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }

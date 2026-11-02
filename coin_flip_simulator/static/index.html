@@ -72,7 +72,7 @@
 
         <fieldset class="field bet">
           <legend>The bet</legend>
-          <label><span>Win</span><span class="entry"><span class="unit">$</span><input id="win" type="number" min="1" step="10" value="1050" /></span></label>
+          <label><span>Win</span><span class="entry"><span class="unit">$</span><input id="win" type="number" min="0.01" step="any" value="1050" /></span></label>
           <label><span>Lose</span><span class="entry"><span class="unit">$</span><input id="loss" type="number" min="1" step="10" value="1000" /></span></label>
           <label><span>P(heads)</span><span class="entry"><input id="p" type="number" min="0.01" max="0.99" step="0.01" value="0.5" /></span></label>
         </fieldset>
@@ -86,7 +86,7 @@
       <section class="plate" id="plate-1" aria-labelledby="h1-title">
         <div class="text">
           <h1 id="h1-title"><span class="pn">I.</span> <span id="p1-head">At $1,000, the stake is 100% of what you have.</span></h1>
-          <p>Whether a bet is dangerous depends on its size <em>relative to your wealth</em>, not on its dollar edge. This flip puts <b data-v="loss">$1,000</b> on the line. The growth-maximising stake for these odds, the <dfn>Kelly fraction</dfn>, is <b data-v="kellyF">2.38%</b> of wealth, so this exact flip is sized right once you have <b data-v="kellyW">$42K</b>.</p>
+          <p>Whether a bet is dangerous depends on its size <em>relative to your wealth</em>, not on its dollar edge. This flip puts <b data-v="loss">$1,000</b> on the line. The growth-maximising stake for these odds, the <dfn>Kelly fraction</dfn>, is <b data-v="kellyF">2.38%</b> of wealth, so this exact flip is sized right once you have <b data-v="kellyW">$42K</b> (<a class="xref" href="#plate-8">why this fraction</a>, Plate VIII).</p>
           <p id="p1-be">Someone with log utility accepts it once the stake falls under <b data-v="beF1">4.76%</b> of wealth, from about <b data-v="beW1">$21K</b>. Above that fraction, betting repeatedly makes the typical outcome shrink even though every flip has a positive average.</p>
           <dl class="ledger" id="p1-ledger"></dl>
           <p class="howto"><b>Reading the plate.</b> The straightedge runs from your wealth on the left scale (more wealth sits lower) to the stake on the right. Where it crosses the middle scale is the share of your wealth at risk. Drag either orange end, or focus one and use the arrow keys. Moving the stake scales the whole bet and keeps the odds.</p>
@@ -148,7 +148,7 @@
         </figure>
         <div class="table-wrap">
           <h3 class="table-h">Table of ruin: chance of being broke by flip <i>n</i>, by starting wealth</h3>
-          <div id="table" class="ruin-table"><p class="pending">Computing the table…</p></div>
+          <div id="table" class="plate-table ruin-table"><p class="pending">Computing the table…</p></div>
           <p class="table-note">Exact to the shown precision. The highlighted row is your starting wealth and the highlighted column is your number of flips. “Forever” uses the Lundberg bound described at the end.</p>
         </div>
       </section>
@@ -204,14 +204,20 @@
         <div class="text">
           <h2 id="h8-title"><span class="pn">VIII.</span> <span id="p8-head">Stake the Kelly fraction and your money grows fastest.</span></h2>
           <p>If you bet a fixed fraction <i>f</i> of your wealth every time, the typical (median) result compounds at <code>g(f) = p·ln(1 + b·f) + q·ln(1 − f)</code> per flip, where <i>b</i> = win ÷ loss. The <dfn>Kelly criterion</dfn> picks the <i>f</i> that maximises <i>g</i>: <code>f* = p − q/b</code>.</p>
-          <p>Bet less and you grow more slowly but more smoothly. Bet <em>more</em> and growth falls, reaching zero at about twice Kelly, even though every single flip still has a positive average. <dfn>Half-Kelly</dfn> keeps three quarters of the growth with half the swings, which is why practitioners like it. A CRRA investor with risk aversion γ bets roughly Kelly ÷ γ.</p>
+          <p id="p8-why">Why does growth peak? Your wealth <em>multiplies</em>. Stake a fraction <i>f</i> and each heads leaves you <span class="formula">×(1 + <i>b</i>·<i>f</i>)</span>, each tails <span class="formula">×(1 − <i>f</i>)</span>, and a typical run has about as many tails as the odds say. Stake a little and the edge barely adds up. Stake a lot and a tails takes away more than a heads gives back: losing half needs a doubling to recover.</p>
+          <div class="growth" id="p8-growth">
+            <h3 class="table-h">Table of growth</h3>
+            <div class="plate-table" id="growth-table"></div>
+            <p class="table-note" id="growth-note"></p>
+          </div>
+          <p><dfn>Half-Kelly</dfn> keeps three quarters of the growth with half the swings, which is why practitioners like it. A CRRA investor with risk aversion γ bets roughly Kelly ÷ γ.</p>
           <dl class="ledger" id="p8-ledger"></dl>
         </div>
         <figure class="fig">
           <figcaption><span>Typical growth vs. fraction staked</span><span>median change per 100 flips</span></figcaption>
           <div class="legend" id="legend-kelly"></div>
           <div id="chart-kelly"></div>
-          <p class="chart-note">Click or drag across the chart to <b>change the stake</b> (the odds stay the same).</p>
+          <p class="chart-note">Run the pointer across the chart to read any stake. <b>Click or drag to make it your stake</b>: this changes the bet in Your numbers, and the odds stay the same.</p>
         </figure>
       </section>
 

@@ -1,4 +1,4 @@
-import { certaintyEquivalent, breakEvenWealth, kelly, logspace, adjustmentCoefficient } from './sim.js';
+import { certaintyEquivalent, breakEvenWealth, kelly, logspace, adjustmentCoefficient, scaleBet } from './sim.js';
 import {
   Chart,
   DASH,
@@ -43,6 +43,10 @@ try {
   }
   if (['auto', 'light', 'dark'].includes(saved.theme)) state.theme = saved.theme;
 } catch {}
+/** The bet as last typed. Moving the stake rescales this, never the already-rescaled bet, so the odds can't drift. */
+const setAnchor = () => (state.anchor = { win: state.win, loss: state.loss });
+setAnchor();
+const cents = (x) => Math.round(x * 100) / 100;
 let saveTimer = null;
 function save() {
   syncResetButton();
@@ -215,6 +219,7 @@ function syncResetButton() {
 
 function resetNumbers() {
   Object.assign(state, DEFAULTS);
+  setAnchor();
   syncRail();
   buildNomo();
   nomoAnimate();
@@ -315,9 +320,10 @@ function bindControls() {
   });
   for (const id of ['win', 'loss', 'p']) {
     $(id).addEventListener('change', () => {
-      state.win = Math.round(num('win', state.win, 1, 1e8));
+      state.win = cents(num('win', state.win, 0.01, 1e8));
       state.loss = Math.round(num('loss', state.loss, 1, 1e8));
       state.p = num('p', state.p, 0.01, 0.99);
+      setAnchor();
       syncRail();
       nomoAnimate();
       buildNomo();
@@ -603,9 +609,9 @@ function nomoAnimate() {
 }
 
 function setStake(L) {
-  const ratio = state.win / state.loss;
-  state.loss = Math.max(1, Math.round(L));
-  state.win = Math.max(1, Math.round(L * ratio));
+  const bet = scaleBet(state.anchor, Math.max(1, Math.round(L)));
+  state.loss = bet.loss;
+  state.win = bet.win;
   $('loss').value = state.loss;
   $('win').value = state.win;
   $('w0-slider').value = wealthToSlider(state.w0);
@@ -1352,6 +1358,66 @@ function renderCE() {
 }
 
 // ---------------------------------------------------------------- Plate VIII: Kelly growth curve
+const mult = (x) => `×${x <= 0 ? '0' : x.toFixed(4)}`;
+/** A signed percentage that never prints "−0.0%" for a value that is zero to the shown precision. */
+const signedPct = (v, digits = 1) => {
+  if (Math.abs(v) >= 1) digits = 0; // "+1157%", not "+1156.9%"
+  const r = +(v * 100).toFixed(digits);
+  if (r === 0) return `${(0).toFixed(digits)}%`;
+  return `${r > 0 ? '+' : '−'}${Math.abs(r).toFixed(digits)}%`;
+};
+const typical100 = (f, P) => (f >= 1 ? -1 : Math.expm1(100 * growth(f, P)));
+
+/** Plate VIII's second paragraph: why growth has a peak, in the reader's own numbers. */
+function renderGrowthWhy(P, k, f0) {
+  const b = P.win / P.loss;
+  const heads = Math.round(P.p * 100);
+  const atKelly =
+    Math.abs(P.p - 0.5) < 1e-9
+      ? `At Kelly, one heads and one tails together leave you ${mult((1 + b * k) * (1 - k))}; no other stake does better.`
+      : `At Kelly, a typical 100 flips leaves you ${signedPct(typical100(k, P))}; no other stake does better.`;
+  const twice = Math.abs(f0 / k - 2) < 0.2 ? ', about twice Kelly,' : '';
+  $('p8-why').innerHTML =
+    `Why does growth peak? Your wealth <em>multiplies</em>. Stake a fraction <i>f</i> and each heads leaves you <span class="formula">×(1 + <i>b</i>·<i>f</i>)</span>, each tails <span class="formula">×(1 − <i>f</i>)</span>, where <i>b</i> = ${+b.toFixed(3)}. ` +
+    `A typical 100 flips has about ${heads} heads and ${100 - heads} tails. ` +
+    `Stake a little and the edge barely adds up. Stake a lot and a tails takes away more than a heads gives back: losing half needs a doubling to recover. ` +
+    `${atKelly} Past ${pct(f0, 2)}${twice} the typical run shrinks, even though every flip still has a positive average.`;
+}
+
+/** The table of growth: what one heads and one tails do at a few stakes, ending in the curve's own height. */
+function renderGrowthTable(P, k, f0, fYou) {
+  $('p8-growth').hidden = false;
+  const b = P.win / P.loss;
+  const rows = [
+    { f: k / 2, label: 'half-Kelly' },
+    { f: k, label: 'Kelly', lead: true },
+    { f: f0, label: 'growth stops' },
+  ];
+  const same = rows.find((r) => Math.abs(r.f - fYou) / r.f < 0.01);
+  if (same) {
+    same.label += ' · you';
+    same.you = true;
+  } else rows.push({ f: fYou, label: 'you', you: true });
+  rows.sort((a, c) => a.f - c.f);
+  const stake = (f) => (f < 0.1 ? pct(f, 2) : fmtFrac(f));
+  const wide = (s) => `<span class="wide">Each </span>${s}`;
+  const body = rows
+    .map((r) => {
+      const v = typical100(r.f, P);
+      const cls = [r.you && 'you', r.lead && 'lead'].filter(Boolean).join(' ');
+      return (
+        `<tr class="${cls}"><th scope="row">${stake(r.f)}<span class="note">${r.label}</span></th>` +
+        `<td>${mult(1 + b * r.f)}</td><td>${mult(1 - r.f)}</td>` +
+        `<td class="${v < -0.0005 ? 'neg' : ''}">${signedPct(v)}</td></tr>`
+      );
+    })
+    .join('');
+  $('growth-table').innerHTML =
+    `<table><thead><tr><th scope="col">Stake</th><th scope="col">${wide('heads')}</th><th scope="col">${wide('tails')}</th><th scope="col">Typical 100 flips</th></tr></thead><tbody>${body}</tbody></table>`;
+  const heads = Math.round(P.p * 100);
+  $('growth-note').textContent = `A typical 100 flips is about ${heads} heads and ${100 - heads} tails; that column is the growth curve's height at each stake. Exact.`;
+}
+
 function renderKelly() {
   const P = odds();
   const k = kelly(P).fraction;
@@ -1359,6 +1425,8 @@ function renderKelly() {
   const fYou = state.loss / state.w0;
   if (!(k > 0)) {
     $('p8-head').textContent = 'This bet has no edge, so the best stake is zero.';
+    $('p8-why').textContent = 'With no edge, every stake shrinks the typical run, so no fraction grows your money.';
+    $('p8-growth').hidden = true;
     ledger($('p8-ledger'), [['Kelly fraction', '0%', 'lead']]);
     charts.kelly.set((ctx, f) => {
       ctx.fillStyle = f.t.muted;
@@ -1370,13 +1438,9 @@ function renderKelly() {
   const f0 = zeroGrowthFraction(P);
   const fG = bestFractionFor(state.gamma, P);
   $('p8-head').textContent = `Stake ${pct(k, 2)} of your wealth each flip and your money grows fastest.`;
-  ledger($('p8-ledger'), [
-    ['Your stake as a fraction', fmtFrac(fYou)],
-    ['Typical change per 100 flips at your stake', fYou >= 1 ? '−100%' : pct(per100(fYou), 1), fYou >= f0 ? 'neg' : ''],
-    ['At Kelly', `+${pct(per100(k), 1)}`, 'lead'],
-    ['At half-Kelly', `+${pct(per100(k / 2), 1)}`],
-    [`Best fraction for your γ = ${gammaLabel(state.gamma)}`, state.gamma === 0 ? 'everything' : pct(fG, 2)],
-  ]);
+  renderGrowthWhy(P, k, f0);
+  renderGrowthTable(P, k, f0, fYou);
+  ledger($('p8-ledger'), [[`Best fraction for your γ = ${gammaLabel(state.gamma)}`, state.gamma === 0 ? 'everything' : pct(fG, 2)]]);
   $('legend-kelly').innerHTML = legendHTML([
     { label: 'Median growth per 100 flips', color: 'var(--s1)' },
     { label: 'Your stake', color: 'var(--iso)', kind: 'swatch' },
@@ -1444,6 +1508,8 @@ function renderKelly() {
       if (v >= ymin) dot(ctx, mx, Y(v), f.t.s1, f.t.surface);
       return (
         tipHead(`Stake ${pct(fr, 2)} of wealth`) +
+        tipRow('Each heads', mult(1 + (P.win / P.loss) * fr)) +
+        tipRow('Each tails', mult(1 - fr)) +
         tipRow('Median change per 100 flips', pct(v, 2), f.t.s1) +
         tipRow('Stake at your wealth', money(fr * state.w0, { compact: false }))
       );
