@@ -1179,10 +1179,16 @@ function renderUtil() {
     legendHTML(series.map((s) => ({ label: s.label, color: `var(${s.css})`, dash: s.dash.length ? s.dash : null }))) +
     legendHTML([{ label: 'Chord between the two outcomes', color: 'var(--ink)', kind: 'thin' }]);
 
+  const uA = utilityAt(w0 - loss, g, w0);
+  const uB = utilityAt(w0 + win, g, w0);
+  // u(w0) = 0, so the win helps by uB and the loss hurts by −uA. The curve makes every lost
+  // dollar hurt more than a won dollar helps, but a bigger win can still outweigh the loss in total.
   $('p6-head').textContent =
     g === 0
       ? 'At γ = 0 a dollar is a dollar: no curve, so no risk aversion.'
-      : `At γ = ${gammaLabel(g)}, losing ${money(loss)} hurts more than winning ${money(win)} helps.`;
+      : -uA > uB
+        ? `At γ = ${gammaLabel(g)}, losing ${money(loss)} hurts more than winning ${money(win)} helps.`
+        : `At γ = ${gammaLabel(g)}, winning ${money(win)} helps more than losing ${money(loss)} hurts.`;
   const sigma2 = p * (1 - p) * (win + loss) ** 2;
   const prem = E - ce;
   ledger($('p6-ledger'), [
@@ -1196,8 +1202,6 @@ function renderUtil() {
   const xmax = w0 + 1.5 * win;
   const xs = Array.from({ length: 241 }, (_, i) => xmin + ((xmax - xmin) * i) / 240);
   for (const s of series) s.vals = xs.map((x) => utilityAt(x, s.gamma, w0));
-  const uA = utilityAt(w0 - loss, g, w0);
-  const uB = utilityAt(w0 + win, g, w0);
   const eu = p * uB + (1 - p) * uA;
   const floor = -2.2 * (loss + win);
   let ymin = Math.min(...series.flatMap((s) => s.vals.filter(isFinite)));
